@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      .oculto {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Validacion</h1>
+    <form class="" method="get" action="categorias.html">
+      <p>
+        <input type="text" name="login" placeholder="login">
+      </p>
+      <p>
+        <input type="password" name="password" placeholder="password">
+      </p>
+      <p>
+        <input type="submit" name="" value="Entrar">
+        <input type="reset" name="" value="Cambiar de usuario">
+      </p>
+    </form>
+    <div id="panel_password" class="oculto">
+      <input type="text" name="nueva" placeholder="Introduzca la nueva contraseña">
+      <button type="button" name="" id="cambiar_password">Cambiar</button>
+    </div>
+    <!--Con esto podemos enviar datos y que se guarden en Storage y no por method(post/get)-->
+    <script>
+      //forma 1
+      // const form = document.querySelector('form');
+      //forma 2
+      const form = document.forms[0];
+      form.addEventListener('submit', (e) => {
+        // e.preventDefault();
+        console.log(form.login.value);
+        localStorage.user = form.login.value;
+        sessionStorage.password = form.password.value;
+        // form.login.value = '';
+        // form.password.value = '';
+        form.login.remove();
+        form.password.remove();
+        // form.submit();
+      });
+
+      /*Segundo apartado*/
+      function onload()
+      {
+        form.login.value = localStorage.user;
+        form.password.value = sessionStorage.password;
+      }
+      
+      onload();
+    </script>
+  </body>
+</html>

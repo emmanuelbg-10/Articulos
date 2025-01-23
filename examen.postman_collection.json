@@ -1,0 +1,253 @@
+{
+	"info": {
+		"_postman_id": "ccc582d9-5cab-410e-807e-8817c1fee3e6",
+		"name": "examen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "usuarios",
+			"item": [
+				{
+					"name": "Cambiar usuario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"old\": \"1234\",\r\n    \"new\": \"5678\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/usuario/marta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuario",
+								"marta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar alumnos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ea1aa7b-47f0-4a3e-b40a-8256feb889e5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "categorias",
+			"item": [
+				{
+					"name": "listar categorias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/categoria",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "articulos",
+			"item": [
+				{
+					"name": "Listar articulos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/articulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"articulo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Articulo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_categoria\": 3,\r\n    \"usuario\": \"marta\",\r\n    \"titulo\": \"Este es el título\",\r\n    \"cuerpo\": \"Este es el cuerpo del artículo.\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/articulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"articulo"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "categoria_articulos",
+			"item": [
+				{
+					"name": "Listar artículos de una categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/categoria/1/articulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categoria",
+								"1",
+								"articulo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Articulo (categoria en URL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"marta\",\r\n    \"titulo\": \"Este es el título\",\r\n    \"cuerpo\": \"Este es el cuerpo del artículo.\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/categoria/1/articulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categoria",
+								"1",
+								"articulo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Articulo Autentificación (categoria en URL)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"marta\",\r\n    \"password\": \"1234\",\r\n    \"cuerpo\": \"Este es el cuerpo del artículo.\",\r\n    \"titulo\": \"Lorem ipsum blablabla\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/categoria/3/articulo_secure",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categoria",
+								"3",
+								"articulo_secure"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
