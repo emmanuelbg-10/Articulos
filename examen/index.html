@@ -34,6 +34,7 @@
       // const form = document.querySelector('form');
       //forma 2
       const form = document.forms[0];
+      const newPassword = document.querySelector('[name = "nueva"]');
       form.addEventListener("submit", (e) => {
         // e.preventDefault();
         console.log(form.login.value);
@@ -72,7 +73,7 @@
 
       document.getElementById("cambiar_password").addEventListener("click", () => {
         const user = form.login.value;
-        const nueva = document.querySelector('[name = "nueva"]').value;
+        const nueva = newPassword.value;
         const data = {
           old: form.password.value,
           new: nueva
@@ -87,13 +88,18 @@
         };
         fetch("http://localhost:3000/api/usuario/" + user, options).then((res) => {
           if (res.ok) {
-            console.log(res);
-            sessionStorage.password = document.querySelector('[name="nueva"]').value;
+            successChange();
           } else {
             console.error("Error en la solicitud: " + res.status);
           }
         });
       });
+
+      function successChange(){
+        sessionStorage.password = newPassword.value;
+        form.password.value = newPassword.value;
+        document.getElementById("panel_password").classList.add("oculto");
+      }
 
       onload();
     </script>

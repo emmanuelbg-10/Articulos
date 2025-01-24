@@ -1,46 +1,57 @@
 const bodyArticulos = document.querySelector('#articulos tbody');
 const form = document.getElementById('form_crear');
 
-let categorias;
+let categorias = [];
+let articulos = [];
+
 
 async function cargarCategorias() {
   try {
-    const response = await fetch('http://localhost:3000/api/categoria');
+    const response = await fetch('http://localhost:3000/api/categoria'); 
     if (!response.ok) {
       throw new Error('Fallo http: ' + response.status);
     }
 
     categorias = await response.json();
-    cargarArticulos();
+    cargarCategoriasAlmacenadas();
+    //cargarArticulos();
   } catch (e) {
     console.error('Error en el fetch de categorias: ' + e);
   }
 }
 
-async function cargarArticulos() {
-  try {
-    const response = await fetch('http://localhost:3000/api/articulo');
-
-    if (!response.ok) {
-      throw new Error('Fallo http');
-    }
-    const articulos = await response.json();
-
-    articulos.forEach(articulo => {
-      renderArticulo(articulo);
-    });
-  } catch (e) {
-    console.error('Error en el fetch: ' + e);
-  }
-}
-
-function renderArticulo(articulo) {
+async function cargarCategoriasAlmacenadas() {
   let categoriasSaved = [];
   if (localStorage.categorias) {
     categoriasSaved = JSON.parse(localStorage.categorias);
   }
 
-  if (categoriasSaved.includes(articulo.id_categoria.toString())) {
+  for (let i=0; i<categoriasSaved.length; i++) {
+    await cargarArticulosPorCategoria(categoriasSaved[i]);
+  }
+
+  articulos.forEach(articulo => {
+    renderArticulo(articulo);
+  });
+}
+cargarCategorias();
+
+async function cargarArticulosPorCategoria(categoriaId) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/categoria/${categoriaId}/articulo`);
+    if (!response.ok) {
+      throw new Error(`Fallo http al obtener artículos de la categoría ${categoriaId}: ` + response.status);
+    }
+
+    const articulosNuevos = await response.json();
+    articulosNuevos.forEach(a => articulos.push(a));
+  } catch (e) {
+    console.error(`Error en el fetch de artículos para la categoría ${categoriaId}: ` + e);
+  }
+}
+
+function renderArticulo(articulo) {
+
     const tr = document.createElement('tr');
     let td = document.createElement('td');
     td.textContent = articulo.id;
@@ -48,7 +59,7 @@ function renderArticulo(articulo) {
 
     td = document.createElement('td');
     /*Esto es para que se vea el nombre de la categoria y no el id*/
-    td.textContent = categorias.filter(c => c.id == articulo.id_categoria)[0].nombre
+    td.textContent = categorias.filter(c => c.id==articulo.id_categoria)[0].nombre
     tr.append(td);
 
     td = document.createElement('td');
@@ -64,14 +75,14 @@ function renderArticulo(articulo) {
     tr.append(td);
 
     bodyArticulos.append(tr);
-  }
+  
 }
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const articulo = {
-    "id_categoria": form.id_categoria.value,
-    "usuario": form.usuario.value,
+    "usuario": localStorage.user,
+    "password": sessionStorage.password,
     "titulo": form.titulo.value,
     "cuerpo": form.cuerpo.value
   }
@@ -85,7 +96,7 @@ form.addEventListener('submit', async (e) => {
   }
   console.log(options);
   try {
-    const response = await fetch('http://localhost:3000/api/articulo', options);
+    const response = await fetch('http://localhost:3000/api/categoria/'+form.id_categoria.value+'/articulo_secure'  , options);
     if (!response.ok) {
       throw new Error('Fallo http en el crear: ' + response.status);
     }
@@ -95,5 +106,3 @@ form.addEventListener('submit', async (e) => {
     console.error('Error en el fetch de crear: ' + e);
   }
 })
-
-cargarCategorias();
