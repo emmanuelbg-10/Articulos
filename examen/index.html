@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title></title>
     <style media="screen">
       .oculto {
@@ -9,22 +9,23 @@
       }
     </style>
   </head>
+
   <body>
     <h1>Validacion</h1>
     <form class="" method="get" action="categorias.html">
       <p>
-        <input type="text" name="login" placeholder="login">
+        <input type="text" name="login" placeholder="login" />
       </p>
       <p>
-        <input type="password" name="password" placeholder="password">
+        <input type="password" name="password" placeholder="password" />
       </p>
       <p>
-        <input type="submit" name="" value="Entrar">
-        <input type="reset" name="" value="Cambiar de usuario" id="reset-user">
+        <input type="submit" name="" value="Entrar" />
+        <input type="reset" name="" value="Cambiar de usuario" id="reset-user" />
       </p>
     </form>
     <div id="panel_password" class="oculto">
-      <input type="text" name="nueva" placeholder="Introduzca la nueva contraseña">
+      <input type="text" name="nueva" placeholder="Introduzca la nueva contraseña" />
       <button type="button" name="" id="cambiar_password">Cambiar</button>
     </div>
     <!--Con esto podemos enviar datos y que se guarden en Storage y no por method(post/get)-->
@@ -33,9 +34,12 @@
       // const form = document.querySelector('form');
       //forma 2
       const form = document.forms[0];
-      form.addEventListener('submit', (e) => {
+      form.addEventListener("submit", (e) => {
         // e.preventDefault();
         console.log(form.login.value);
+        if(localStorage.categorias && localStorage.user !== form.login.value){
+        localStorage.removeItem('categorias');
+      }
         localStorage.user = form.login.value;
         sessionStorage.password = form.password.value;
         // form.login.value = '';
@@ -46,52 +50,51 @@
       });
 
       /*Segundo apartado*/
-      function onload()
-      {
+      function onload() {
         //forma1
         // form.login.value = localStorage.user || '';
         // form.password.value = sessionStorage.password || '';
         //forma2
-        form.login.value = localStorage.getItem('user');
-        form.password.value = sessionStorage.getItem('password');
-        if(localStorage.user &&  sessionStorage.password){
-          document.getElementById('panel_password').classList.remove('oculto');
+        form.login.value = localStorage.getItem("user");
+        form.password.value = sessionStorage.getItem("password");
+        if (localStorage.user && sessionStorage.password) {
+          document.getElementById("panel_password").classList.remove("oculto");
         }
       }
 
-      document.getElementById('reset-user').addEventListener('click', () => {
-        localStorage.removeItem('user');
-        sessionStorage.removeItem('password');
-        form.login.value = '';
-        form.password.value = '';
-        document.getElementById('panel_password').classList.add('oculto');
+      document.getElementById("reset-user").addEventListener("click", () => {
+        localStorage.removeItem("user");
+        sessionStorage.removeItem("password");
+        form.login.value = "";
+        form.password.value = "";
+        document.getElementById("panel_password").classList.add("oculto");
       });
 
-      document.getElementById('cambiar_password').addEventListener('click', () => {
+      document.getElementById("cambiar_password").addEventListener("click", () => {
         const user = form.login.value;
         const nueva = document.querySelector('[name = "nueva"]').value;
         const data = {
-          'old' : form.password.value,
-          'new' : '5678'
-        }
+          old: form.password.value,
+          new: nueva
+        };
 
         const options = {
-          method: 'PUT',
-          header: {
-            'Content-Type' : 'application-json'
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(data)
-        }
-        fetch('http://localhost:3000/api/usuario/' + user, options)
-        .then(res => {
-          if(res.status) {
-            cambioDeContraseña();
+          body: JSON.stringify(data),
+        };
+        fetch("http://localhost:3000/api/usuario/" + user, options).then((res) => {
+          if (res.ok) {
+            console.log(res);
+            sessionStorage.password = document.querySelector('[name="nueva"]').value;
           } else {
-            fallo();
+            console.error("Error en la solicitud: " + res.status);
           }
         });
       });
-      
+
       onload();
     </script>
   </body>
